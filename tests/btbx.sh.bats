@@ -81,6 +81,13 @@ teardown() {
     ${MBA}
 }
 
+@test "ensure_cli - k9s cli can be downloaded an run properly" {
+    ensure_cli_k9s
+    assert_exist ${K9S}
+    run ${K9S} --help
+    assert_output -p 'K9s'
+}
+
 #
 # adhoc_pod on k8s
 #
