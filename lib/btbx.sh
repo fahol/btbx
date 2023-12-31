@@ -20,6 +20,7 @@ OC=${BTBX_BIN}/oc
 KC=${BTBX_BIN}/kubectl
 MBA=${BTBX_BIN}/micromamba
 VSCODE=${BTBX_BIN}/code
+K9S=${BTBX_BIN}/k9s
 
 #
 # Helper functions
@@ -195,6 +196,44 @@ ensure_cli_micromamba() {
   mkdir -p ${BTBX_BIN}
   mv ${temp_dir}/bin/micromamba ${BTBX_BIN}/
   chmod 700 ${BTBX_BIN}/micromamba
+  rm -rf ${temp_dir}
+  return 0
+}
+
+ensure_cli_k9s() {
+  # Ensure k9s
+
+  K9S_VER=v0.30.5
+
+  if [[ ! -z ${1} ]]; then
+    BTBX_BIN=$1
+  fi
+  if [[ -e ${BTBX_BIN}/k9s ]]; then
+    return 0
+  fi
+
+  # Download vscode CLI
+  temp_dir=$(mktemp -d)
+  mkdir -p ${temp_dir}
+
+  case ${OS_ARCH} in
+  Darwin-x86_64)
+    curl -LS https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Darwin_amd64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    ;;
+  Darwin-arm64)
+    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Darwin_arm64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    ;;
+  GNULinux-x86_64)
+    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_amd64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    ;;
+  GNULinux-arm64)
+    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_arm64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    ;;
+  esac
+
+  mkdir -p ${BTBX_BIN}
+  mv ${temp_dir}/k9s ${BTBX_BIN}/
+  chmod 700 ${BTBX_BIN}/k9s
   rm -rf ${temp_dir}
   return 0
 }
