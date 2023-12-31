@@ -253,6 +253,10 @@ ensure_cli_mambaenv() {
     && -e ${BTBX_MAMBA}/bin/pipx ]]; then
     return 0
   fi
+
+  # Ensure dependencies
+  ensure_cli_micromamba
+
   # Setup a mamba environment with python and pipx as a base
   mkdir -p $(dirname ${BTBX_MAMBA})
   ${MBA} create -p ${BTBX_MAMBA} -y -c conda-forge \
