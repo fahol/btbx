@@ -241,16 +241,16 @@ ensure_cli_k9s() {
 
   case ${OS_ARCH} in
   Darwin-x86_64)
-    curl -LS https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Darwin_amd64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    curl -LS https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Darwin_amd64.tar.gz | tar -xvz -C ${temp_dir} k9s
     ;;
   Darwin-arm64)
-    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Darwin_arm64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Darwin_arm64.tar.gz | tar -xvz -C ${temp_dir} k9s
     ;;
   GNULinux-x86_64)
-    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_amd64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_amd64.tar.gz | tar -xvz -C ${temp_dir} k9s
     ;;
   GNULinux-arm64)
-    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_arm64.tar.gz | tar -xvj -C ${temp_dir} k9s
+    curl -Ls https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_arm64.tar.gz | tar -xvz -C ${temp_dir} k9s
     ;;
   esac
 
@@ -333,19 +333,19 @@ ensure_cli_yq() {
 
   case ${OS_ARCH} in
   Darwin-x86_64)
-    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_darwin_amd64.tar.gz | tar -xvj -C ${temp_dir} yq_darwin_amd64
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_darwin_amd64.tar.gz | tar -xvz -C ${temp_dir} ./yq_darwin_amd64
     cp ${temp_dir}/yq_darwin_amd64 ${BTBX_BIN}/yq
     ;;
   Darwin-arm64)
-    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_darwin_arm64.tar.gz | tar -xvj -C ${temp_dir} yq_darwin_arm64
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_darwin_arm64.tar.gz | tar -xvz -C ${temp_dir} ./yq_darwin_arm64
     cp ${temp_dir}/yq_darwin_arm64 ${BTBX_BIN}/yq
     ;;
   GNULinux-x86_64)
-    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_amd64.tar.gz | tar -xvj -C ${temp_dir} yq_linux_amd64
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_amd64.tar.gz | tar -xvz -C ${temp_dir} ./yq_linux_amd64
     cp ${temp_dir}/yq_linux_amd64 ${BTBX_BIN}/yq
     ;;
   GNULinux-arm64)
-    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_arm64.tar.gz | tar -xvj -C ${temp_dir} yq_linux_arm64
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_arm64.tar.gz | tar -xvz -C ${temp_dir} ./yq_linux_arm64
     cp ${temp_dir}/yq_linux_arm64 ${BTBX_BIN}/yq
     ;;
   esac
