@@ -43,26 +43,26 @@ teardown() {
 # Downloaders for external binaries
 #
 
-@test "ensure_cli - openshift client can be downloaded and run properly" {
-    ensure_cli_openshift ${TMP_DIR}
+@test "ensure_cli - openshift clients can be downloaded and run properly" {
+    ensure_cli_openshift
     # Openshift CLI
-    assert_exist ${TMP_DIR}/oc
-    ${TMP_DIR}/oc
+    assert_exist ${OC}
+    ${OC}
     # Kubectl CLI
-    assert_exist ${TMP_DIR}/kubectl
-    ${TMP_DIR}/kubectl
+    assert_exist ${KC}
+    ${KC}
 }
 
-@test "ensure_cli - vscode can be downloaded an run properly" {
-    ensure_cli_vscode ${TMP_DIR}
-    assert_exist ${TMP_DIR}/code
-    ${TMP_DIR}/code --help
+@test "ensure_cli - vscode cli can be downloaded an run properly" {
+    ensure_cli_vscode
+    assert_exist ${VSCODE}
+    ${VSCODE} --help
 }
 
-@test "ensure_cli - micromamba can be downloaded an run properly" {
-    ensure_cli_micromamba ${TMP_DIR}
-    assert_exist ${TMP_DIR}/micromamba
-    ${TMP_DIR}/micromamba
+@test "ensure_cli - micromamba cli can be downloaded an run properly" {
+    ensure_cli_micromamba
+    assert_exist ${MBA}
+    ${MBA}
 }
 
 #
