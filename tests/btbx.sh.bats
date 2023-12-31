@@ -110,6 +110,12 @@ teardown() {
     ${DVC} --version
 }
 
+@test "ensure_cli - mlflow - experiment and model tracker" {
+    ensure_cli_mlflow
+    assert_exist ${BTBX_BIN}/mlflow
+    ${MLFLOW} --version
+}
+
 @test "ensure_cli - yq the yaml parsing tool" {
     ensure_cli_yq
     assert_exist ${BTBX_BIN}/yq
