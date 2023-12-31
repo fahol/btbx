@@ -40,6 +40,10 @@ PYTHON3_VER=${PYTHON3_VER:-3.11.7}
 DVC_VER=${DVC_VER:-3.37.0}
 DVC=${BTBX_BIN}/dvc
 
+# mlflow
+MLFLOW_VER=${MLFLOW_VER:-2.9.2}
+MLFLOW=${BTBX_BIN}/mlflow
+
 # yq
 YQ_VER=${YQ_VER:-v4.40.5}
 YQ=${BTBX_BIN}/yq
@@ -293,6 +297,22 @@ ensure_cli_dvc() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install dvc[all]==${DVC_VER}
+  return 0
+}
+
+ensure_cli_mlflow() {
+  # Install dvc on mamba
+  if [[ -e ${BTBX_BIN}/mlflow ]]; then
+    return 0
+  fi
+  ensure_cli_mambaenv $1
+
+  # DVC will be installed using pipx
+  export PIPX_HOME=${BTBX_BASE}
+  export PIPX_BIN_DIR=${BTBX_BIN}
+  local PIPX=${BTBX_MAMBA}/bin/pipx
+
+  ${PIPX} install mlflow==${MLFLOW_VER}
   return 0
 }
 
