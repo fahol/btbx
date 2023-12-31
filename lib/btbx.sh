@@ -40,6 +40,10 @@ PYTHON3_VER=${PYTHON3_VER:-3.11.7}
 DVC_VER=${DVC_VER:-3.37.0}
 DVC=${BTBX_BIN}/dvc
 
+# yq
+YQ_VER=${YQ_VER:-v4.40.5}
+YQ=${BTBX_BIN}/yq
+
 #
 # Helper functions
 #
@@ -289,6 +293,44 @@ ensure_cli_dvc() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install dvc[all]==${DVC_VER}
+  return 0
+}
+
+ensure_cli_yq() {
+  # Ensure yq the yaml parser
+
+  if [[ ! -z ${1} ]]; then
+    BTBX_BIN=$1
+  fi
+  if [[ -e ${BTBX_BIN}/yq ]]; then
+    return 0
+  fi
+
+  # Download vscode CLI
+  temp_dir=$(mktemp -d)
+  mkdir -p ${temp_dir}
+  mkdir -p ${BTBX_BIN}
+
+  case ${OS_ARCH} in
+  Darwin-x86_64)
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_darwin_amd64.tar.gz | tar -xvj -C ${temp_dir} yq_darwin_amd64
+    cp ${temp_dir}/yq_darwin_amd64 ${BTBX_BIN}/yq
+    ;;
+  Darwin-arm64)
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_darwin_arm64.tar.gz | tar -xvj -C ${temp_dir} yq_darwin_arm64
+    cp ${temp_dir}/yq_darwin_arm64 ${BTBX_BIN}/yq
+    ;;
+  GNULinux-x86_64)
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_amd64.tar.gz | tar -xvj -C ${temp_dir} yq_linux_amd64
+    cp ${temp_dir}/yq_linux_amd64 ${BTBX_BIN}/yq
+    ;;
+  GNULinux-arm64)
+    curl -LS https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_arm64.tar.gz | tar -xvj -C ${temp_dir} yq_linux_arm64
+    cp ${temp_dir}/yq_linux_arm64 ${BTBX_BIN}/yq
+    ;;
+  esac
+  chmod 700 ${BTBX_BIN}/yq
+  rm -rf ${temp_dir}
   return 0
 }
 
