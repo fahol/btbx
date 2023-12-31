@@ -280,7 +280,7 @@ ensure_cli_dvc() {
   export PIPX_BIN_DIR=${BTBX_BIN}
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
-  ${PIPX} install dvc==${DVC_VER}
+  ${PIPX} install dvc[all]==${DVC_VER}
   return 0
 }
 
