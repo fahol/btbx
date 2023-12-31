@@ -22,6 +22,7 @@ KC=${BTBX_BIN}/kubectl
 MBA=${BTBX_BIN}/micromamba
 VSCODE=${BTBX_BIN}/code
 K9S=${BTBX_BIN}/k9s
+DVC=${BTBX_BIN}/dvc
 
 #
 # Helper functions
@@ -241,7 +242,7 @@ ensure_cli_k9s() {
 
 ensure_cli_mambaenv() {
   # Ensure mamba environment with python
-  PYTHON3_VER=3.9.6
+  PYTHON3_VER=3.11.7
 
   if [[ ! -z ${1} ]]; then
     BTBX_MAMBA=$1
@@ -257,6 +258,25 @@ ensure_cli_mambaenv() {
   ${MBA} create -p ${BTBX_MAMBA} -y -c conda-forge \
     python=${PYTHON3_VER} \
     pipx
+  return 0
+}
+
+ensure_cli_dvc() {
+  # Install dvc on mamba
+
+  DVC_VER=3.37.0
+
+  if [[ -e ${BTBX_BIN}/dvc ]]; then
+    return 0
+  fi
+  ensure_cli_mambaenv $1
+
+  # DVC will be installed using pipx
+  export PIPX_HOME=${BTBX_BASE}
+  export PIPX_BIN_DIR=${BTBX_BIN}
+  local PIPX=${BTBX_MAMBA}/bin/pipx
+
+  ${PIPX} install dvc==${DVC_VER}
   return 0
 }
 
