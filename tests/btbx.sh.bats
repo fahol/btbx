@@ -8,12 +8,12 @@ setup() {
     load ${ROOT}/tests/lib/bats-detik/lib/detik
 
     # Load the library file
-    FILE_DST=${ROOT}/.tmp/bin
+    BTBX_BASE=${ROOT}/.tmp
     load ${ROOT}/lib/btbx.sh
 
     # Test what we need
-    assert_exist ${FILE_DST}/oc
-    assert_exist ${FILE_DST}/kubectl
+    assert_exist ${BTBX_BIN}/oc
+    assert_exist ${BTBX_BIN}/kubectl
     assert_exist ${OC}
     assert_exist ${KC}
 
@@ -34,9 +34,25 @@ teardown() {
     temp_del ${TMP_DIR}
 }
 
-@test "btbx.sh can be loaded properly" {
-    assert_equal ${FILE_HOME} $(realpath ${ROOT}/lib)
-    assert_exist ${FILE_HOME}/btbx.sh
+@test "btbx.sh - can be loaded properly" {
+    assert_equal ${BTBX_HOME} $(realpath ${ROOT}/lib)
+    assert_exist ${BTBX_HOME}/btbx.sh
+}
+
+@test "btbx.sh - environment variable propagation" {
+    # Test if btbx.sh can build the environment variables
+    # as expected if we have a clean environment
+
+    # Artificially create a safe environment
+    unset BTBX_BASE
+    unset BTBX_BIN
+
+    # Setup a new base
+    BTBX_BASE=${TMP_DIR}
+    . ${BTBX_HOME}/btbx.sh
+
+    # Then we should have a series of variables automatically set
+    assert_equal ${BTBX_BIN} ${TMP_DIR}/bin
 }
 
 #

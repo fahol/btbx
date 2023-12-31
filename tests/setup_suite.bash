@@ -9,13 +9,13 @@ setup_suite() {
     load ${ROOT}/tests/lib/bats-file/load
 
     # Load the library itself
-    export FILE_DST=${ROOT}/.tmp/bin
+    export BTBX_BASE=${ROOT}/.tmp
     load ${ROOT}/lib/btbx.sh
 
     # Ensure the command line utilities
-    ensure_cli_openshift ${FILE_DST}
-    assert_exist ${FILE_DST}/oc
-    assert_exist ${FILE_DST}/kubectl
+    ensure_cli_openshift ${BTBX_BIN}
+    assert_exist ${BTBX_BIN}/oc
+    assert_exist ${BTBX_BIN}/kubectl
     assert_exist ${OC}
     assert_exist ${KC}
 
