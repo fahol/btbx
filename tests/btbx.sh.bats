@@ -104,6 +104,12 @@ teardown() {
     ${BTBX_BASE}/opt/mamba/bin/pipx --version
 }
 
+@test "ensure_cli - dvc - data version control" {
+    ensure_cli_dvc
+    assert_exist ${BTBX_BIN}/dvc
+    ${DVC} --version
+}
+
 #
 # adhoc_pod on k8s
 #
