@@ -17,11 +17,27 @@ OS_ARCH=$(uname -o | tr -d '/')-$(uname -m)
 BTBX_BASE=${BTBX_BASE:-${BTBX_HOME}/.${OS_ARCH}}
 BTBX_BIN=${BTBX_BIN:-${BTBX_BASE}/bin}
 BTBX_MAMBA=${BTBX_MAMBA:-${BTBX_BASE}/opt/mamba}
+
+# K8s CLI
+OCP_VER=${OCP_VER:-4.12.9}
 OC=${BTBX_BIN}/oc
 KC=${BTBX_BIN}/kubectl
+
+# Mamba
 MBA=${BTBX_BIN}/micromamba
+
+# VSCode
 VSCODE=${BTBX_BIN}/code
+
+#K9s
+K9S_VER=${K9S_VER:-v0.30.5}
 K9S=${BTBX_BIN}/k9s
+
+# Python3
+PYTHON3_VER=${PYTHON3_VER:-3.11.7}
+
+# DVC
+DVC_VER=${DVC_VER:-3.37.0}
 DVC=${BTBX_BIN}/dvc
 
 #
@@ -91,7 +107,6 @@ k8s_auth_ensure() {
 
 function ensure_cli_openshift() {
   # Openshift client source
-  OCP_VER=4.12.9
   OCP_BASE=https://mirror.openshift.com/pub/openshift-v4/clients/ocp
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
@@ -205,8 +220,6 @@ ensure_cli_micromamba() {
 ensure_cli_k9s() {
   # Ensure k9s
 
-  K9S_VER=v0.30.5
-
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
@@ -242,8 +255,6 @@ ensure_cli_k9s() {
 
 ensure_cli_mambaenv() {
   # Ensure mamba environment with python
-  PYTHON3_VER=3.11.7
-
   if [[ ! -z ${1} ]]; then
     BTBX_MAMBA=$1
   fi
@@ -267,9 +278,6 @@ ensure_cli_mambaenv() {
 
 ensure_cli_dvc() {
   # Install dvc on mamba
-
-  DVC_VER=3.37.0
-
   if [[ -e ${BTBX_BIN}/dvc ]]; then
     return 0
   fi
