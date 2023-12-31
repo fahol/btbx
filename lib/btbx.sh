@@ -6,19 +6,20 @@
 
 # Get the relative home of this file
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	export FILE_HOME=$(realpath $(dirname $0))
+	export BTBX_HOME=$(realpath $(dirname $0))
 else
-	export FILE_HOME=$(realpath $(dirname ${BASH_SOURCE}))
+	export BTBX_HOME=$(realpath $(dirname ${BASH_SOURCE}))
 fi
 
 OS_ARCH=$(uname -o | tr -d '/')-$(uname -m)
 
 # File destination can be configured from the caller
-FILE_DST=${FILE_DST:-${FILE_HOME}/.${OS_ARCH}}
-OC=${FILE_DST}/oc
-KC=${FILE_DST}/kubectl
-MBA=${FILE_DST}/micromamba
-VSCODE=${FILE_DST}/code
+BTBX_BASE=${BTBX_BASE:-${BTBX_HOME}/.${OS_ARCH}}
+BTBX_BIN=${BTBX_BIN:-${BTBX_BASE}/bin}
+OC=${BTBX_BIN}/oc
+KC=${BTBX_BIN}/kubectl
+MBA=${BTBX_BIN}/micromamba
+VSCODE=${BTBX_BIN}/code
 
 #
 # Helper functions
@@ -90,9 +91,9 @@ function ensure_cli_openshift() {
   OCP_VER=4.12.9
   OCP_BASE=https://mirror.openshift.com/pub/openshift-v4/clients/ocp
   if [[ ! -z ${1} ]]; then
-    FILE_DST=$1
+    BTBX_BIN=$1
   fi
-  if [[ -e ${FILE_DST}/oc && -e ${FILE_DST}/kubectl ]]; then
+  if [[ -e ${BTBX_BIN}/oc && -e ${BTBX_BIN}/kubectl ]]; then
     return 0
   fi
 
@@ -119,11 +120,11 @@ function ensure_cli_openshift() {
     mkdir -p "$temp_dir"
     curl -o "$temp_dir/oc.tar.gz" ${URL} &> /dev/null
     tar xzf "$temp_dir/oc.tar.gz" -C "$temp_dir"
-    mkdir -p ${FILE_DST}
-    mv "$temp_dir/oc" ${FILE_DST}/
-    mv "$temp_dir/kubectl" ${FILE_DST}/
-    chmod 700 ${FILE_DST}/oc
-    chmod 700 ${FILE_DST}/kubectl
+    mkdir -p ${BTBX_BIN}
+    mv "$temp_dir/oc" ${BTBX_BIN}/
+    mv "$temp_dir/kubectl" ${BTBX_BIN}/
+    chmod 700 ${BTBX_BIN}/oc
+    chmod 700 ${BTBX_BIN}/kubectl
     rm -rf "$temp_dir"
   fi
   return 0
@@ -131,9 +132,9 @@ function ensure_cli_openshift() {
 
 ensure_cli_vscode() {
   if [[ ! -z ${1} ]]; then
-    FILE_DST=$1
+    BTBX_BIN=$1
   fi
-  if [[ -e ${FILE_DST}/code ]]; then
+  if [[ -e ${BTBX_BIN}/code ]]; then
     return 0
   fi
 
@@ -158,9 +159,9 @@ ensure_cli_vscode() {
     mkdir -p "$temp_dir"
     curl -Lk ${URL} --output ${temp_dir}/vscode_cli.tar.gz &>/dev/null
     tar xzf "$temp_dir/vscode_cli.tar.gz" -C "$temp_dir"
-    mkdir -p ${FILE_DST}
-    mv "$temp_dir/code" ${FILE_DST}/
-    chmod 700 ${FILE_DST}/code
+    mkdir -p ${BTBX_BIN}
+    mv "$temp_dir/code" ${BTBX_BIN}/
+    chmod 700 ${BTBX_BIN}/code
     rm -rf "$temp_dir"
   fi
   return 0
@@ -168,9 +169,9 @@ ensure_cli_vscode() {
 
 ensure_cli_micromamba() {
   if [[ ! -z ${1} ]]; then
-    FILE_DST=$1
+    BTBX_BIN=$1
   fi
-  if [[ -e ${FILE_DST}/micromamba ]]; then
+  if [[ -e ${BTBX_BIN}/micromamba ]]; then
     return 0
   fi
 
@@ -191,9 +192,9 @@ ensure_cli_micromamba() {
     curl -Ls https://micro.mamba.pm/api/micromamba/linux-aarch64/latest | tar -xvj -C ${temp_dir} bin/micromamba
     ;;
   esac
-  mkdir -p ${FILE_DST}
-  mv ${temp_dir}/bin/micromamba ${FILE_DST}/
-  chmod 700 ${FILE_DST}/micromamba
+  mkdir -p ${BTBX_BIN}
+  mv ${temp_dir}/bin/micromamba ${BTBX_BIN}/
+  chmod 700 ${BTBX_BIN}/micromamba
   rm -rf ${temp_dir}
   return 0
 }
