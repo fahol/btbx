@@ -46,6 +46,7 @@ teardown() {
     # Artificially create a safe environment
     unset BTBX_BASE
     unset BTBX_BIN
+    unset BTBX_MAMBA
 
     # Setup a new base
     BTBX_BASE=${TMP_DIR}
@@ -53,6 +54,7 @@ teardown() {
 
     # Then we should have a series of variables automatically set
     assert_equal ${BTBX_BIN} ${TMP_DIR}/bin
+    assert_equal ${BTBX_MAMBA} ${TMP_DIR}/opt/mamba
 }
 
 #
@@ -86,6 +88,20 @@ teardown() {
     assert_exist ${K9S}
     run ${K9S} --help
     assert_output -p 'K9s'
+}
+
+@test "ensure_cli - mamba environment for btbx can be created" {
+    ensure_cli_mambaenv
+    assert_equal ${BTBX_MAMBA} ${BTBX_BASE}/opt/mamba
+    assert_exist ${BTBX_MAMBA}
+    assert_exist ${BTBX_BASE}/opt/mamba
+    assert_exist ${BTBX_BASE}/opt/mamba/bin/python3
+    assert_exist ${BTBX_BASE}/opt/mamba/bin/pip3
+    assert_exist ${BTBX_BASE}/opt/mamba/bin/pipx
+
+    ${BTBX_BASE}/opt/mamba/bin/python3 --version
+    ${BTBX_BASE}/opt/mamba/bin/pip3 --version
+    ${BTBX_BASE}/opt/mamba/bin/pipx --version
 }
 
 #

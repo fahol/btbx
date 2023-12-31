@@ -16,6 +16,7 @@ OS_ARCH=$(uname -o | tr -d '/')-$(uname -m)
 # File destination can be configured from the caller
 BTBX_BASE=${BTBX_BASE:-${BTBX_HOME}/.${OS_ARCH}}
 BTBX_BIN=${BTBX_BIN:-${BTBX_BASE}/bin}
+BTBX_MAMBA=${BTBX_MAMBA:-${BTBX_BASE}/opt/mamba}
 OC=${BTBX_BIN}/oc
 KC=${BTBX_BIN}/kubectl
 MBA=${BTBX_BIN}/micromamba
@@ -235,6 +236,27 @@ ensure_cli_k9s() {
   mv ${temp_dir}/k9s ${BTBX_BIN}/
   chmod 700 ${BTBX_BIN}/k9s
   rm -rf ${temp_dir}
+  return 0
+}
+
+ensure_cli_mambaenv() {
+  # Ensure mamba environment with python
+  PYTHON3_VER=3.9.6
+
+  if [[ ! -z ${1} ]]; then
+    BTBX_MAMBA=$1
+  fi
+  if [[ -e ${BTBX_MAMBA} \
+    && -e ${BTBX_MAMBA}/bin/python3 \
+    && -e ${BTBX_MAMBA}/bin/pip3 \
+    && -e ${BTBX_MAMBA}/bin/pipx ]]; then
+    return 0
+  fi
+  # Setup a mamba environment with python and pipx as a base
+  mkdir -p $(dirname ${BTBX_MAMBA})
+  ${MBA} create -p ${BTBX_MAMBA} -y -c conda-forge \
+    python=${PYTHON3_VER} \
+    pipx
   return 0
 }
 
