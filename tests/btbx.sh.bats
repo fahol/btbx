@@ -116,6 +116,12 @@ teardown() {
     ${MLFLOW} --version
 }
 
+@test "ensure_cli - cookiecutter - python templater" {
+    ensure_cli_cookiecutter
+    assert_exist ${BTBX_BIN}/cookiecutter
+    ${COOKIECUTTER} --version
+}
+
 @test "ensure_cli - yq the yaml parsing tool" {
     ensure_cli_yq
     assert_exist ${BTBX_BIN}/yq
