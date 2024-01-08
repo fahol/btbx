@@ -44,6 +44,10 @@ DVC=${BTBX_BIN}/dvc
 MLFLOW_VER=${MLFLOW_VER:-2.9.2}
 MLFLOW=${BTBX_BIN}/mlflow
 
+# cookiecutter
+COOKIECUTTER_VER=${COOKIECUTTER_VER:-2.5.0}
+COOKIECUTTER=${BTBX_BIN}/cookiecutter
+
 # yq
 YQ_VER=${YQ_VER:-v4.40.5}
 YQ=${BTBX_BIN}/yq
@@ -313,6 +317,22 @@ ensure_cli_mlflow() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install mlflow==${MLFLOW_VER}
+  return 0
+}
+
+ensure_cli_cookiecutter() {
+  # Install dvc on mamba
+  if [[ -e ${BTBX_BIN}/cookiecutter ]]; then
+    return 0
+  fi
+  ensure_cli_mambaenv $1
+
+  # DVC will be installed using pipx
+  export PIPX_HOME=${BTBX_BASE}
+  export PIPX_BIN_DIR=${BTBX_BIN}
+  local PIPX=${BTBX_MAMBA}/bin/pipx
+
+  ${PIPX} install cookiecutter==${COOKIECUTTER_VER}
   return 0
 }
 
