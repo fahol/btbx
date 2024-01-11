@@ -269,15 +269,18 @@ ensure_cli_k9s() {
 }
 
 ensure_cli_mambaenv() {
-  # Ensure mamba environment with python
+  # Ensure the base mamba environment with python
   if [[ ! -z ${1} ]]; then
     BTBX_MAMBA=$1
   fi
   if [[ -e ${BTBX_MAMBA} \
     && -e ${BTBX_MAMBA}/bin/python3 \
     && -e ${BTBX_MAMBA}/bin/pip3 \
-    && -e ${BTBX_MAMBA}/bin/pipx ]]; then
-    return 0
+    && -e ${BTBX_MAMBA}/bin/pipx \
+    && -e ${BTBX_BIN}/python3 \
+    && -e ${BTBX_BIN}/pip3 \
+    && -e ${BTBX_BIN}/pipx ]]; then
+      return 0
   fi
 
   # Ensure dependencies
@@ -288,6 +291,23 @@ ensure_cli_mambaenv() {
   ${MBA} create -p ${BTBX_MAMBA} -y -c conda-forge \
     python=${PYTHON3_VER} \
     pipx
+
+  # Link up the python binaries
+  export PY3=${BTBX_BIN}/python3
+  if [[ ! -e ${PY3} ]]; then
+    ln -s ${BTBX_MAMBA}/bin/python3 ${BTBX_BIN}/python3
+  fi
+
+  export PIP3=${BTBX_BIN}/pip3
+  if [[ ! -e ${PIP3} ]]; then
+    ln -s ${BTBX_MAMBA}/bin/pip3 ${BTBX_BIN}/pip3
+  fi
+
+  export PIPX=${BTBX_BIN}/pipx
+  if [[ ! -e ${PIPX} ]]; then
+    ln -s ${BTBX_MAMBA}/bin/pipx ${BTBX_BIN}/pipx
+  fi
+
   return 0
 }
 
