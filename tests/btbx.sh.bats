@@ -128,6 +128,12 @@ teardown() {
     ${YQ} --version
 }
 
+@test "ensure_cli - gitlab-runner CICD runner" {
+    ensure_cli_gitlab_runner
+    assert_exist ${BTBX_BIN}/gitlab-runner
+    ${GITLAB_RUNNER} --version
+}
+
 #
 # adhoc_pod on k8s
 #

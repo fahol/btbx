@@ -52,6 +52,10 @@ COOKIECUTTER=${BTBX_BIN}/cookiecutter
 YQ_VER=${YQ_VER:-v4.40.5}
 YQ=${BTBX_BIN}/yq
 
+# gitlab-runner
+GITLAB_RUNNER_VER=${GITLAB_RUNNER_VER:-v16.7.0}
+GITLAB_RUNNER=${BTBX_BIN}/gitlab-runner
+
 #
 # Helper functions
 #
@@ -370,6 +374,38 @@ ensure_cli_yq() {
   esac
   chmod 700 ${BTBX_BIN}/yq
   rm -rf ${temp_dir}
+  return 0
+}
+
+ensure_cli_gitlab_runner() {
+  # Ensure the gitlab runner binary
+  # https://gitlab.com/gitlab-org/gitlab-runner/-/tags
+  # 
+
+  if [[ ! -z ${1} ]]; then
+    BTBX_BIN=$1
+  fi
+  if [[ -e ${BTBX_BIN}/gitlab-runner ]]; then
+    return 0
+  fi
+
+  mkdir -p ${BTBX_BIN}
+
+  case ${OS_ARCH} in
+  Darwin-x86_64)
+    curl -Lo ${BTBX_BIN}/gitlab-runner "https://gitlab-runner-downloads.s3.amazonaws.com/${GITLAB_RUNNER_VER}/binaries/gitlab-runner-darwin-amd64"
+    ;;
+  Darwin-arm64)
+    curl -Lo ${BTBX_BIN}/gitlab-runner "https://gitlab-runner-downloads.s3.amazonaws.com/${GITLAB_RUNNER_VER}/binaries/gitlab-runner-darwin-arm64"
+    ;;
+  GNULinux-x86_64)
+    curl -Lo ${BTBX_BIN}/gitlab-runner "https://gitlab-runner-downloads.s3.amazonaws.com/${GITLAB_RUNNER_VER}/binaries/gitlab-runner-linux-amd64"
+    ;;
+  GNULinux-arm64)
+    curl -Lo ${BTBX_BIN}/gitlab-runner "https://gitlab-runner-downloads.s3.amazonaws.com/${GITLAB_RUNNER_VER}/binaries/gitlab-runner-linux-arm64"
+    ;;
+  esac
+  chmod 700 ${BTBX_BIN}/gitlab-runner
   return 0
 }
 
