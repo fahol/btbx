@@ -149,8 +149,8 @@ function ensure_cli_openshift() {
     mkdir -p ${BTBX_BIN}
     mv "$temp_dir/oc" ${BTBX_BIN}/
     mv "$temp_dir/kubectl" ${BTBX_BIN}/
-    chmod 700 ${BTBX_BIN}/oc
-    chmod 700 ${BTBX_BIN}/kubectl
+    chmod 755 ${BTBX_BIN}/oc
+    chmod 755 ${BTBX_BIN}/kubectl
     rm -rf "$temp_dir"
   fi
   return 0
@@ -190,7 +190,7 @@ ensure_cli_vscode() {
     tar xzf "$temp_dir/vscode_cli.tar.gz" -C "$temp_dir"
     mkdir -p ${BTBX_BIN}
     mv "$temp_dir/code" ${BTBX_BIN}/
-    chmod 700 ${BTBX_BIN}/code
+    chmod 755 ${BTBX_BIN}/code
     rm -rf "$temp_dir"
   fi
   return 0
@@ -225,7 +225,7 @@ ensure_cli_micromamba() {
   esac
   mkdir -p ${BTBX_BIN}
   mv ${temp_dir}/bin/micromamba ${BTBX_BIN}/
-  chmod 700 ${BTBX_BIN}/micromamba
+  chmod 755 ${BTBX_BIN}/micromamba
   rm -rf ${temp_dir}
   return 0
 }
@@ -263,7 +263,7 @@ ensure_cli_k9s() {
 
   mkdir -p ${BTBX_BIN}
   mv ${temp_dir}/k9s ${BTBX_BIN}/
-  chmod 700 ${BTBX_BIN}/k9s
+  chmod 755 ${BTBX_BIN}/k9s
   rm -rf ${temp_dir}
   return 0
 }
@@ -310,7 +310,8 @@ ensure_cli_dvc() {
 
 ensure_cli_mlflow() {
   # Install dvc on mamba
-  if [[ -e ${BTBX_BIN}/mlflow ]]; then
+  export MLFLOW=${BTBX_BIN}/mlflow
+  if [[ -e ${MLFLOW} ]]; then
     return 0
   fi
   ensure_cli_mambaenv $1
@@ -392,7 +393,7 @@ ensure_cli_yq() {
     cp ${temp_dir}/yq_linux_arm64 ${BTBX_BIN}/yq
     ;;
   esac
-  chmod 700 ${BTBX_BIN}/yq
+  chmod 755 ${BTBX_BIN}/yq
   rm -rf ${temp_dir}
   return 0
 }
@@ -426,7 +427,8 @@ ensure_cli_gitlab_runner() {
     curl -Lo ${BTBX_BIN}/gitlab-runner "https://gitlab-runner-downloads.s3.amazonaws.com/${GITLAB_RUNNER_VER}/binaries/gitlab-runner-linux-arm64"
     ;;
   esac
-  chmod 700 ${BTBX_BIN}/gitlab-runner
+
+  chmod 755 ${BTBX_BIN}/gitlab-runner
   return 0
 }
 
