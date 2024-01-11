@@ -305,6 +305,9 @@ ensure_cli_dvc() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install dvc[all]==${DVC_VER}
+  unset PIPX_HOME
+  unset PIPX_BIN_DIR
+  unset PIPX
   return 0
 }
 
@@ -322,6 +325,9 @@ ensure_cli_mlflow() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install mlflow==${MLFLOW_VER}
+  unset PIPX_HOME
+  unset PIPX_BIN_DIR
+  unset PIPX
   return 0
 }
 
@@ -339,6 +345,9 @@ ensure_cli_cookiecutter() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install cookiecutter==${COOKIECUTTER_VER}
+  unset PIPX_HOME
+  unset PIPX_BIN_DIR
+  unset PIPX
   return 0
 }
 
@@ -357,6 +366,9 @@ ensure_cli_supervisord() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install supervisor==${SUPERVISORD_VER}
+  unset PIPX_HOME
+  unset PIPX_BIN_DIR
+  unset PIPX
   return 0
 }
 
