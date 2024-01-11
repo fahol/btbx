@@ -20,46 +20,30 @@ BTBX_MAMBA=${BTBX_MAMBA:-${BTBX_BASE}/opt/mamba}
 
 # K8s CLI
 OCP_VER=${OCP_VER:-4.12.9}
-OC=${BTBX_BIN}/oc
-KC=${BTBX_BIN}/kubectl
-
-# Mamba
-MBA=${BTBX_BIN}/micromamba
-
-# VSCode
-VSCODE=${BTBX_BIN}/code
 
 #K9s
 K9S_VER=${K9S_VER:-v0.30.5}
-K9S=${BTBX_BIN}/k9s
 
 # Python3
 PYTHON3_VER=${PYTHON3_VER:-3.11.7}
 
 # DVC
 DVC_VER=${DVC_VER:-3.37.0}
-DVC=${BTBX_BIN}/dvc
 
 # mlflow
 MLFLOW_VER=${MLFLOW_VER:-2.9.2}
-MLFLOW=${BTBX_BIN}/mlflow
 
 # cookiecutter
 COOKIECUTTER_VER=${COOKIECUTTER_VER:-2.5.0}
-COOKIECUTTER=${BTBX_BIN}/cookiecutter
 
 # supervisord
 SUPERVISORD_VER=${SUPERVISORD_VER:-4.2.5}
-SUPERVISORD=${BTBX_BIN}/supervisord
-SUPERVISORCTL=${BTBX_BIN}/supervisorctl
 
 # yq
 YQ_VER=${YQ_VER:-v4.40.5}
-YQ=${BTBX_BIN}/yq
 
 # gitlab-runner
 GITLAB_RUNNER_VER=${GITLAB_RUNNER_VER:-v16.7.0}
-GITLAB_RUNNER=${BTBX_BIN}/gitlab-runner
 
 #
 # Helper functions
@@ -132,7 +116,10 @@ function ensure_cli_openshift() {
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
-  if [[ -e ${BTBX_BIN}/oc && -e ${BTBX_BIN}/kubectl ]]; then
+
+  export OC=${BTBX_BIN}/oc
+  export KC=${BTBX_BIN}/kubectl
+  if [[ -e ${OC} && -e ${KC} ]]; then
     return 0
   fi
 
@@ -173,7 +160,10 @@ ensure_cli_vscode() {
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
-  if [[ -e ${BTBX_BIN}/code ]]; then
+
+  # VSCode
+  export VSCODE=${BTBX_BIN}/code
+  if [[ -e ${VSCODE} ]]; then
     return 0
   fi
 
@@ -210,7 +200,9 @@ ensure_cli_micromamba() {
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
-  if [[ -e ${BTBX_BIN}/micromamba ]]; then
+
+  export MBA=${BTBX_BIN}/micromamba
+  if [[ -e ${MBA} ]]; then
     return 0
   fi
 
@@ -244,7 +236,9 @@ ensure_cli_k9s() {
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
-  if [[ -e ${BTBX_BIN}/k9s ]]; then
+
+  export K9S=${BTBX_BIN}/k9s
+  if [[ -e ${K9S} ]]; then
     return 0
   fi
 
@@ -299,7 +293,8 @@ ensure_cli_mambaenv() {
 
 ensure_cli_dvc() {
   # Install dvc on mamba
-  if [[ -e ${BTBX_BIN}/dvc ]]; then
+  export DVC=${BTBX_BIN}/dvc
+  if [[ -e ${DVC} ]]; then
     return 0
   fi
   ensure_cli_mambaenv $1
@@ -331,7 +326,8 @@ ensure_cli_mlflow() {
 
 ensure_cli_cookiecutter() {
   # Install dvc on mamba
-  if [[ -e ${BTBX_BIN}/cookiecutter ]]; then
+  export COOKIECUTTER=${BTBX_BIN}/cookiecutter
+  if [[ -e ${COOKIECUTTER} ]]; then
     return 0
   fi
   ensure_cli_mambaenv $1
@@ -347,7 +343,9 @@ ensure_cli_cookiecutter() {
 
 ensure_cli_supervisord() {
   # Install dvc on mamba
-  if [[ -e ${BTBX_BIN}/supervisord && -e ${BTBX_BIN}/supervisorctl ]]; then
+  export SUPERVISORD=${BTBX_BIN}/supervisord
+  export SUPERVISORCTL=${BTBX_BIN}/supervisorctl
+  if [[ -e ${SUPERVISORD} && -e ${SUPERVISORCTL} ]]; then
     return 0
   fi
   ensure_cli_mambaenv $1
@@ -367,7 +365,8 @@ ensure_cli_yq() {
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
-  if [[ -e ${BTBX_BIN}/yq ]]; then
+  export YQ=${BTBX_BIN}/yq
+  if [[ -e ${YQ} ]]; then
     return 0
   fi
 
@@ -406,6 +405,7 @@ ensure_cli_gitlab_runner() {
   if [[ ! -z ${1} ]]; then
     BTBX_BIN=$1
   fi
+  export GITLAB_RUNNER=${BTBX_BIN}/gitlab-runner
   if [[ -e ${BTBX_BIN}/gitlab-runner ]]; then
     return 0
   fi
