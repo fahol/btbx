@@ -48,6 +48,11 @@ MLFLOW=${BTBX_BIN}/mlflow
 COOKIECUTTER_VER=${COOKIECUTTER_VER:-2.5.0}
 COOKIECUTTER=${BTBX_BIN}/cookiecutter
 
+# supervisord
+SUPERVISORD_VER=${SUPERVISORD_VER:-4.2.5}
+SUPERVISORD=${BTBX_BIN}/supervisord
+SUPERVISORCTL=${BTBX_BIN}/supervisorctl
+
 # yq
 YQ_VER=${YQ_VER:-v4.40.5}
 YQ=${BTBX_BIN}/yq
@@ -337,6 +342,22 @@ ensure_cli_cookiecutter() {
   local PIPX=${BTBX_MAMBA}/bin/pipx
 
   ${PIPX} install cookiecutter==${COOKIECUTTER_VER}
+  return 0
+}
+
+ensure_cli_supervisord() {
+  # Install dvc on mamba
+  if [[ -e ${BTBX_BIN}/supervisord && -e ${BTBX_BIN}/supervisorctl ]]; then
+    return 0
+  fi
+  ensure_cli_mambaenv $1
+
+  # DVC will be installed using pipx
+  export PIPX_HOME=${BTBX_BASE}
+  export PIPX_BIN_DIR=${BTBX_BIN}
+  local PIPX=${BTBX_MAMBA}/bin/pipx
+
+  ${PIPX} install supervisor==${SUPERVISORD_VER}
   return 0
 }
 

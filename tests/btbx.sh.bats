@@ -122,6 +122,14 @@ teardown() {
     ${COOKIECUTTER} --version
 }
 
+@test "ensure_cli - supervisord" {
+    ensure_cli_supervisord
+    assert_exist ${BTBX_BIN}/supervisord
+    assert_exist ${BTBX_BIN}/supervisorctl
+    ${SUPERVISORD} --version
+    ${SUPERVISORCTL} --help
+}
+
 @test "ensure_cli - yq the yaml parsing tool" {
     ensure_cli_yq
     assert_exist ${BTBX_BIN}/yq
