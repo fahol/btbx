@@ -346,7 +346,6 @@ ensure_cli_yq() {
     return 0
   fi
 
-  # Download vscode CLI
   temp_dir=$(mktemp -d)
   mkdir -p ${temp_dir}
   mkdir -p ${BTBX_BIN}
