@@ -102,6 +102,14 @@ teardown() {
     ${BTBX_BASE}/opt/mamba/bin/python3 --version
     ${BTBX_BASE}/opt/mamba/bin/pip3 --version
     ${BTBX_BASE}/opt/mamba/bin/pipx --version
+
+    assert_exist ${BTBX_BASE}/bin/python3
+    assert_exist ${BTBX_BASE}/bin/pip3
+    assert_exist ${BTBX_BASE}/bin/pipx
+
+    ${BTBX_BASE}/bin/python3 --version
+    ${BTBX_BASE}/bin/pip3 --version
+    ${BTBX_BASE}/bin/pipx --version
 }
 
 @test "ensure_cli - dvc - data version control" {
