@@ -464,6 +464,37 @@ ensure_cli_gitlab_runner() {
   return 0
 }
 
+ensure_cli_mc() {
+  if [[ ! -z ${1} ]]; then
+    BTBX_BIN=$1
+  fi
+
+  export MC=${BTBX_BIN}/mc
+  if [[ -e ${MC} ]]; then
+    return 0
+  fi
+
+  mkdir -p ${BTBX_BIN}
+
+  case ${OS_ARCH} in
+  Darwin-x86_64)
+    curl -Lo ${MC} "https://dl.min.io/client/mc/release/darwin-amd64/mc"
+    ;;
+  Darwin-arm64)
+    curl -Lo ${MC} "https://dl.min.io/client/mc/release/darwin-arm64/mc"
+    ;;
+  GNULinux-x86_64)
+    curl -Lo ${MC} "https://dl.min.io/client/mc/release/linux-amd64/mc"
+    ;;
+  GNULinux-arm64)
+    curl -Lo ${MC} "https://dl.min.io/client/mc/release/linux-arm64/mc"
+    ;;
+  esac
+
+  chmod 755 ${MC}
+  return 0
+}
+
 #
 # adhoc_pod on k8s
 #
