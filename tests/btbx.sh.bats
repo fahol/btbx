@@ -150,6 +150,12 @@ teardown() {
     ${GITLAB_RUNNER} --version
 }
 
+@test "ensure_cli - mc - minio cli client" {
+    ensure_cli_mc
+    assert_exist ${BTBX_BIN}/mc
+    ${MC} --version
+}
+
 #
 # adhoc_pod on k8s
 #
